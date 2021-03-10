@@ -5,11 +5,13 @@ const { json } = require("body-parser");
 
 const app = express();
 
-app.use(express.static("C://web_dev//front//newsLetter"));
+// app.use(express.static("C://web_dev//front//newsLetter"));
+app.use(express.static(process.cwd()+"/front//newsLetter"));
 app.use(bodyParser.urlencoded({extended: true}))
 
 app.get("/", function(req, res){
-    res.sendFile("C://web_dev//front//newsLetter//signup.html")
+    // res.sendFile("C://web_dev//front//newsLetter//signup.html")
+    res.sendFile(process.cwd()+"/front//newsLetter//signup.html")
 });
 
 app.post("/failure", function(req, res){
@@ -40,29 +42,26 @@ app.post("/", function(req, res){
 
     options = {
         method:"POST",
-        auth:"derb:2e2fe4ec72d50f2806aac2d473641a0-us1"
+        auth:"derb:22e2fe4ec72d50f2806aac2d473641a0-us1"
     }
     const request = https.request(url, options, function(response){
         if (response.statusCode === 200){
-            res.sendFile("C://web_dev//front//newsLetter//success.html")
+            // res.sendFile("C://web_dev//front//newsLetter//success.html")
+            res.sendFile(process.cwd()+"/front//newsLetter//success.html")
         }else{
-            res.sendFile("C://web_dev//front//newsLetter//failure.html")
+            // res.sendFile("C://web_dev//front//newsLetter//failure.html")
+            res.sendFile(process.cwd()+"/front//newsLetter//failure.html")
         }
         response.on("data", function(data){
             console.log(JSON.parse(data))
-            //res.write("<h1>The temperature in "+city+" is"+temp+" degrees Celsius<h1>")
-            //res.write("<img src="+ iconUrl +">")
-            //res.send() 
         })
     })
 
     request.write(jsonData)
     request.end()
-    
-    //res.send("<h1>Success!<h1>")
-    
+        
 });
 
-app.listen(process.env.PORT || 3000, function(){
+app.listen(process.env.PORT || 3003, function(){
     console.log("Server started on port 3003");
 });
