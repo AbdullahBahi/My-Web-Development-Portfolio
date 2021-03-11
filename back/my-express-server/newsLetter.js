@@ -148,7 +148,7 @@ app.post("/weather", function(req, res){
 
                 res.send()
             }else{
-                res.send("<div class='jumbotron jumbotron-fluid'><div class='container'><h1 class='display-4'>Uh oh!</h1><p class='lead'>There was a problem getting weather data, please try again.</p><form action='/weather_failure' method='POST'><button class='btn btn-lg btn-warning' type='submit' name='button'>Try again</button></form></div></div>")
+                res.send("<div class='jumbotron jumbotron-fluid'><div class='container'><h1 class='display-4'>Uh oh!</h1><p class='lead'>There was a problem getting weather data, please try again.</p><form action='/weatherredirect' method='POST'><button class='btn btn-lg btn-warning' type='submit' name='button'>Try again</button></form></div></div>")
             }
         })
     }) 
