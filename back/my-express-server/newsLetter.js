@@ -2,11 +2,17 @@ const express = require("express");
 const https = require("https");
 const bodyParser = require("body-parser");
 const { json } = require("body-parser");
+const date = require(__dirname+"/my_modules/date.js")
 
 const app = express();
 
 app.use(express.static(process.cwd()+"/front"));
 app.use(bodyParser.urlencoded({extended: true}))
+
+app.set("view engine", "ejs");
+
+const newItems = [];
+const workList = [];
 
 app.get("/", function(req, res){
     res.sendFile(process.cwd()+"/front//portfolio.html")
@@ -161,12 +167,36 @@ app.post("/weatherredirect", function(req, res){
 // =================================================================
 // =================================================================
 
+// To Do List App
+// git and post requests of the app
+app.get("/todo", function(req,res){
+    const day = date.getDay();
+    res.render("toDoList", {listTitle:day, newItems:newItems});
+});
 
+app.get("/todo/work", function(req,res){
+    res.render("toDoList", {listTitle:"Work List", newItems:workList});
+});
 
+app.post("/todo", function(req,res){
+    const newItem = req.body.newItem;
+    if(req.body.list === "Work"){
+        workList.push(newItem);
+        res.redirect("/todo/work");
+    }else{
+        newItems.push(newItem);
+        res.redirect("/todo");
+    }
+    
+});
 
+app.post("/todoredirect", function(req, res){
+    res.redirect("/todo");
+});
 
-
-
+app.get("/todo/work", function(req,res){
+    res.render("toDoList", {listTitle:"Work List", newItems:workList});
+});
 
 app.listen(process.env.PORT || 3003, function(){
     console.log("Server started on port 3003");
