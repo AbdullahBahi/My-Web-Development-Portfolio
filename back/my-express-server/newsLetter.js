@@ -11,8 +11,11 @@ app.use(bodyParser.urlencoded({extended: true}))
 
 app.set("view engine", "ejs");
 
-const newItems = [];
-const workList = [];
+let newItems = [];
+let workList = [];
+let userAgents = [];
+let D = new Date();
+let N = D.getMinutes();
 
 app.get("/", function(req, res){
     res.sendFile(process.cwd()+"/front//portfolio.html")
@@ -170,6 +173,19 @@ app.post("/weatherredirect", function(req, res){
 // To Do List App
 // git and post requests of the app
 app.get("/todo", function(req,res){
+    let d = new Date();
+    let n = d.getMinutes()
+
+    if(n-N>5){
+        userAgents = [];
+    }
+    let userAgent = req.headers["user-agent"];
+    if(!userAgents.includes(userAgent)){
+        newItems = [];
+        workList = [];
+        userAgents.push(userAgent);
+    }
+    console.log(userAgents)
     const day = date.getDay();
     res.render("toDoList", {listTitle:day, newItems:newItems});
 });
@@ -192,10 +208,6 @@ app.post("/todo", function(req,res){
 
 app.post("/todoredirect", function(req, res){
     res.redirect("/todo");
-});
-
-app.get("/todo/work", function(req,res){
-    res.render("toDoList", {listTitle:"Work List", newItems:workList});
 });
 
 app.listen(process.env.PORT || 3003, function(){
